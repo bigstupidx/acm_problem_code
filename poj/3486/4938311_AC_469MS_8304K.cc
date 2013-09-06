@@ -1,0 +1,49 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#define MAX 1010
+
+int m[MAX][MAX],cost[MAX][MAX];
+int c,n;
+
+void solve()
+{
+	int i,j,k,temp;
+	for(i=2;i<=n;i++)
+		for(j=i;j<=n;j++)
+			if(j==i){
+				cost[i][j]=c+m[i][j]+cost[1][j-1];
+				for(k=2;k<i;k++)
+					if( (c+m[i][j]+cost[k][j-1]) < cost[i][j] )
+						cost[i][j]=c+m[i][j]+cost[k][j-1];
+			}
+			else
+				cost[i][j]=cost[i][j-1]+m[i][j];
+	temp=cost[1][n];
+	for(i=2;i<=n;i++)
+		if(cost[i][n]<temp)
+			temp=cost[i][n];
+	printf("%d\n",temp);
+	return ;
+}
+
+int main()
+{
+   //freopen("c:\\input.txt","r",stdin);
+	while(scanf("%d",&c)!=EOF){
+        memset(cost,0,sizeof(cost));
+        memset(m,0,sizeof(m));
+		int i,j;
+		scanf("%d",&n);
+		for(i=1;i<=n;i++)
+			for(j=i;j<=n;j++)
+				scanf("%d",m[i]+j);
+		for(i=1;i<=n;i++)
+			cost[1][i]=m[1][i]+c;
+		for(i=1;i<=n;i++)
+			for(j=n;j>i;j--)
+					m[i][j]=m[i][j]-m[i][j-1];
+		solve();
+	}
+}
+

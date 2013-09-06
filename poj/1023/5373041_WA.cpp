@@ -1,0 +1,36 @@
+#include<stdio.h>
+#include<string>
+
+using namespace std;
+int main()
+{
+    int t;
+    scanf("%d",&t);
+    while(t--)
+    {
+        long long len,n;
+        char str[65],ans[65];
+        scanf("%lld%s%lld",&len,str,&n);
+        ans[len]='\0';
+        while(n)
+        {
+            len--;
+            if(len<0)break;
+            if(!(n%2))
+            ans[len]='0';
+            else
+            {
+                ans[len]='1';
+                if(str[len]=='n')
+                n+=1;
+            }
+            n/=2;
+        }
+        if(len<0)printf("Impossible\n");
+        else{
+            for(int i=0;i<len;i++)ans[i]='0';
+            puts(ans);
+        }
+    }
+    return 0;    
+}

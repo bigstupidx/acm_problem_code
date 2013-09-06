@@ -1,0 +1,64 @@
+#include <cstdio>
+#include <cstring>
+
+struct edge{
+    int to,d,next;
+}e[2000000];
+const int inf=1000000000;
+int dis[50010],que[50010],flag[50010],head[50010];
+
+void Add_Edge(int x,int y,int va,int &top)
+{
+    //printf("%d->%d %d\n",x,y,va);
+    e[++top].to=y;   e[top].d=va;
+    e[top].next=head[x];    head[x]=top;
+}
+int Spfa(int s,int t)
+{
+    int front=0,rear=1,n=t-s+2;
+    for(int i=s;i<=t;i++){dis[i]=-inf;  flag[i]=0;}
+    dis[s]=0;   que[0]=s;  flag[s]=1;
+    while(front!=rear)
+    {
+        int i=que[front];
+        front=(front+1)%n;
+        for(int j=head[i];j!=-1;j=e[j].next)
+        {
+            if(dis[e[j].to]<dis[i]+e[j].d)
+            {
+                dis[e[j].to]=dis[i]+e[j].d;
+                if(!flag[e[j].to]){
+                    flag[e[j].to]=1;
+                    que[rear]=e[j].to;
+                    rear=(rear+1)%n;
+                }
+            }
+        }
+        flag[i]=0;
+    }
+    return dis[t];
+}
+int main()
+{
+    int n;
+    while(scanf("%d",&n)!=EOF)
+    {
+        int maxi=-inf,mini=inf,top=-1;
+        memset(head,-1,sizeof(head));
+        for(int i=0;i<n;i++)
+        {
+            int a,b,c;
+            scanf("%d%d%d",&a,&b,&c);
+            if(a<mini)mini=a;
+            if(b+1>maxi)maxi=b+1;
+            Add_Edge(a,b+1,c,top);
+        }
+        for(int i=mini;i<maxi;i++)
+        {
+            Add_Edge(i,i+1,0,top);
+            Add_Edge(i+1,i,-1,top);
+        }
+        printf("%d\n",Spfa(mini,maxi));
+    }
+    return 0;
+}

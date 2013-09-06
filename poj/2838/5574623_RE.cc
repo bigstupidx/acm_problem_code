@@ -1,0 +1,86 @@
+#include<cstdio>
+#include<cstring>
+#include<queue>
+
+using namespace std;
+int n,top;
+struct node{
+    int to;
+    node *next;
+}nd[40010],*vert[1010];
+bool v[1010];
+int Bfs(int s,int t)
+{
+    int u;
+    queue<int>Q;
+    if(s==t)return 1;
+    memset(v,false,sizeof(v));
+    v[s]=true;
+    Q.push(s);
+    while(!Q.empty())
+    {
+        u=Q.front();Q.pop();
+        for(node *p=vert[u]; p ;p=p->next)
+        {
+            if(p->to==t)return 1;
+            if(!v[p->to])
+            {
+                v[p->to]=true;
+                Q.push(p->to);
+            }
+        }
+    }
+    return 0;
+}
+void Insert(int u,int v)
+{
+    node *p=&nd[top++];
+    p->to=v;
+    p->next=vert[u];vert[u]=p;
+
+    p=&nd[top++];
+    p->to=u;
+    p->next=vert[v];vert[v]=p;
+}
+void Delete(int u,int v)
+{
+    node *p,*q;
+    p=vert[u];
+    if(p->to==v)vert[u]=p->next;
+    else{
+        q=p;p=p->next;
+        for(;p;p=p->next)
+            if(p->to==v)q->next=p->next;
+    }
+    p=vert[v];
+    if(p->to==u)vert[v]=p->next;
+    else{
+        q=p;p=p->next;
+        for(;p;p=p->next)
+            if(p->to==u)q->next=p->next;
+    }
+}
+int main()
+{
+    while(scanf("%d",&n)!=EOF)
+    {
+        int x,y,q;
+        top=0;
+        for(int i=1;i<=n;i++)
+            vert[i]=NULL;
+        scanf("%d",&q);
+        while(q--)
+        {
+            char str[5];
+            scanf("%s %d %d",&str,&x,&y);
+            if(str[0]=='Q')
+            {
+                if(Bfs(x,y))puts("Y");
+                else puts("N");
+            }
+            else if(str[0]=='D') Delete(x,y);
+            else Insert(x,y);
+        }
+    }
+    return 0;
+}
