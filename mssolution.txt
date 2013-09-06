@@ -1,0 +1,110 @@
+#include <cstdio>
+#include <cstdlib>
+
+class Node
+{
+    public:
+        int data;
+        Node* next;
+};
+
+Node* merge(Node* head1, Node* head2)
+{
+    Node* head = NULL, *tail = NULL;
+
+    while(head1 || head2)
+    {
+        Node* p = NULL;
+
+        if(head1 && head2)
+        {
+            if(head1->data > head2->data)
+            {
+                p = head2;
+                head2 = head2->next;
+            }
+            else
+            {
+                p = head1;
+                head1 = head1->next;
+            }
+        }
+        else if(head1)
+        {
+            p = head1;
+            head1 = head1->next;
+        }
+        else
+        {
+            p = head2;
+            head2 = head2->next;
+        }
+
+        p->next = NULL;
+
+        if(tail == NULL)
+        {
+            head = tail =  p;
+        }
+        else
+        {
+            tail->next = p;
+            tail = p;
+        }
+    }
+
+    return head;
+}
+
+int main()
+{
+    Node* head1 = NULL, *tail = NULL, *head2 = NULL;
+
+    for(int i = 0; i < 10; i++)
+    {
+        Node* node = new Node();
+        node->data = i;
+        node->next = NULL;
+
+        if(i == 0)
+        {
+            head1 = node;
+        }
+        else
+        {
+            tail->next = node;
+        }
+
+        tail = node;
+    }
+
+    for(int i = 0; i < 10; i++)
+    {
+        Node* node = new Node();
+        node->data = i;
+        node->next = NULL;
+
+        if(i == 0)
+        {
+            head2 = node;
+        }
+        else
+        {
+            tail->next = node;
+        }
+
+        tail = node;
+    }
+
+    tail = merge(head1, head2);
+
+    while(tail)
+    {
+        printf("%d ", tail->data);
+        tail = tail->next;
+    }
+
+    system("pause");
+
+    return 0;
+}
