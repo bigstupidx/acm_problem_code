@@ -1,33 +1,26 @@
+//============================================================================
+// Name        : algorithm.cpp
+// Author      : wangjunyong
+// Version     : 1.0.0
+// Copyright   : Your copyright notice
+// Description : O(Nlog(N))
+//============================================================================
+
 #include <cstdio>
-#include <cstring>
-#include <algorithm>
-
-using namespace std;
-
-int n, cnt[20];
 
 int main() {
+//	freopen("in.txt", "r", stdin);
+	int n, a, b;
 	while (scanf("%d", &n) != EOF) {
-		memset(cnt, 0, sizeof(cnt));
-
-		for (int index, i = 0; i < n; i++) {
-			scanf("%d", &index);
-			++cnt[index];
+		int ans = 0;
+		for (int i = 0; i < n; i++) {
+			scanf("%d", &a);
+			if (i == 0 || b != a) {
+				++ans;
+			}
+			b = a;
 		}
-		n /= 3;
-		if (cnt[5] != 0 || cnt[7] != 0 || cnt[1] != n || cnt[2]<cnt[4] || cnt[4] + cnt[6] != n || cnt[2] - cnt[4] + cnt[3] != cnt[6]) {
-			puts("-1");
-		} else {
-			for (int i = 0; i < cnt[4]; i++) {
-				puts("1 2 4");
-			}
-			for (int i = 0, m = cnt[2] - cnt[4]; i < m; i++) {
-				puts("1 2 6");
-			}
-			for (int i = 0; i < cnt[3]; i++) {
-				puts("1 3 6");
-			}
-		}
+		printf("%d\n", ans);
 	}
 	return 0;
 }
