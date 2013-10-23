@@ -11,3 +11,7 @@ hdu: acm.hdu.edu.cn
 
 sgu: acm.sgu.ru
 
+leetcode: http://oj.leetcode.com/
+
+九度oj: http://ac.jobdu.com/index.php
+
